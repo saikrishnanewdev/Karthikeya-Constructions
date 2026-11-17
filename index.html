@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karthikeya Constructions — Building Tomorrow's Landmarks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --color-1:#0F172A;
+  --color-2:#1A4D7A;
+  --color-3:#475569;
+  --color-4:#06A7D7;
+  --color-5:#E5E7EB;
+  --color-6:#FFFFFF;
+  --radius-sm:12px;--radius-md:16px;--radius-lg:28px;--radius-xl:32px;--radius-full:9999px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',ui-sans-serif,sans-serif;color:var(--color-1);background:var(--color-6);line-height:24px;font-size:16px}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+header{position:sticky;top:0;z-index:50;background:var(--color-6);border-bottom:1px solid var(--color-5)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:80px}
+.logo{font-size:20px;font-weight:600;color:var(--color-2)}
+.logo span{color:var(--color-4)}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:14px;font-weight:500;color:var(--color-3);transition:color .15s}
+.nav-links a:hover{color:var(--color-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 24px;border-radius:var(--radius-sm);font-weight:500;font-size:14px;transition:all .15s;cursor:pointer;border:1px solid transparent}
+.btn-primary{background:var(--color-4);color:var(--color-6)}
+.btn-primary:hover{background:var(--color-2)}
+.btn-primary:focus-visible{outline:2px solid var(--color-2);outline-offset:2px}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-outline{border:1px solid var(--color-5);color:var(--color-2);background:var(--color-6)}
+.btn-outline:hover{border-color:var(--color-2);background:var(--color-5)}
+.btn-outline:focus-visible{outline:2px solid var(--color-4);outline-offset:2px}
+.hero{padding:80px 0 48px}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.hero h1{font-size:42px;line-height:40px;font-weight:600;color:var(--color-1);margin-bottom:24px}
+.hero p{font-size:16px;color:var(--color-3);margin-bottom:32px;max-width:520px}
+.hero-img{border-radius:var(--radius-xl);overflow:hidden;box-shadow:0 30px 70px rgba(15,23,42,.18)}
+.hero-img img{width:100%;height:420px;object-fit:cover}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:48px 0;border-top:1px solid var(--color-5);border-bottom:1px solid var(--color-5);margin:48px 0}
+.stat{text-align:center}
+.stat .num{font-size:36px;font-weight:600;color:var(--color-2);line-height:40px}
+.stat .label{font-size:14px;color:var(--color-3)}
+.section{padding:80px 0}
+.section-head{text-align:center;margin-bottom:48px}
+.section-head h2{font-size:36px;font-weight:600;color:var(--color-1);margin-bottom:12px}
+.section-head p{font-size:16px;color:var(--color-3);max-width:640px;margin:0 auto}
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card{background:var(--color-6);border:1px solid var(--color-5);border-radius:var(--radius-md);padding:32px;transition:box-shadow .3s,transform .3s}
+.card:hover{box-shadow:0 30px 70px rgba(15,23,42,.18);transform:translateY(-4px)}
+.card .icon{width:48px;height:48px;border-radius:var(--radius-sm);background:rgba(6,167,215,.1);display:flex;align-items:center;justify-content:center;color:var(--color-4);margin-bottom:20px}
+.card h3{font-size:20px;font-weight:600;color:var(--color-1);margin-bottom:12px}
+.card p{font-size:14px;color:var(--color-3);line-height:20px}
+.projects{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.project{border-radius:var(--radius-lg);overflow:hidden;position:relative}
+.project img{width:100%;height:260px;object-fit:cover;transition:transform .3s}
+.project:hover img{transform:scale(1.05)}
+.project .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,23,42,.85),transparent);display:flex;align-items:flex-end;padding:24px;color:var(--color-6)}
+.project .overlay h3{font-size:20px;font-weight:600}
+.project .overlay p{font-size:14px;opacity:.85}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.about-img{border-radius:var(--radius-xl);overflow:hidden;box-shadow:0 25px 70px rgba(0,0,0,.35)}
+.about-img img{width:100%;height:400px;object-fit:cover}
+.about h2{font-size:36px;font-weight:600;color:var(--color-1);margin-bottom:20px}
+.about p{font-size:16px;color:var(--color-3);margin-bottom:16px}
+.features{list-style:none;margin-top:24px;display:grid;gap:12px}
+.features li{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--color-3)}
+.features li::before{content:'';width:8px;height:8px;border-radius:var(--radius-full);background:var(--color-4);flex-shrink:0}
+.contact{background:var(--color-2);color:var(--color-6);border-radius:var(--radius-xl);padding:64px 48px;text-align:center}
+.contact h2{font-size:36px;font-weight:600;margin-bottom:16px}
+.contact p{font-size:16px;opacity:.85;margin-bottom:32px;max-width:560px;margin-left:auto;margin-right:auto}
+.contact .btn-light{background:var(--color-6);color:var(--color-2)}
+.contact .btn-light:hover{background:var(--color-5)}
+footer{background:var(--color-1);color:var(--color-6);padding:64px 0 32px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-grid h4{font-size:14px;font-weight:600;margin-bottom:16px;opacity:.7}
+.footer-grid a{display:block;font-size:14px;color:var(--color-6);opacity:.7;margin-bottom:8px}
+.footer-grid a:hover{opacity:1}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;justify-content:space-between;font-size:14px;opacity:.6}
+@media(max-width:768px){
+  .hero-grid,.about{grid-template-columns:1fr}
+  .services,.projects{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .hero h1{font-size:36px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <div class="logo">Karthikeya<span>.</span> Constructions</div>
+    <nav class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="btn btn-primary">Get a Quote</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1>Building Tomorrow's Landmarks, Today.</h1>
+      <p>Karthikeya Constructions delivers end-to-end residential, commercial and industrial construction with precision engineering and uncompromising quality.</p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <a href="#contact" class="btn btn-primary">Start Your Project</a>
+        <a href="#projects" class="btn btn-outline">View Our Work</a>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=900&q=80" alt="Construction site">
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="stats">
+    <div class="stat"><div class="num">250+</div><div class="label">Projects Delivered</div></div>
+    <div class="stat"><div class="num">18</div><div class="label">Years of Experience</div></div>
+    <div class="stat"><div class="num">40+</div><div class="label">Skilled Engineers</div></div>
+    <div class="stat"><div class="num">100%</div><div class="label">Client Satisfaction</div></div>
+  </div>
+</section>
+
+<section id="services" class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Our Services</h2>
+      <p>From concept to completion, we offer comprehensive construction solutions tailored to your vision.</p>
+    </div>
+    <div class="services">
+      <div class="card">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        </div>
+        <h3>Residential</h3>
+        <p>Custom homes, villas and apartment complexes built with attention to detail and comfort.</p>
+      </div>
+      <div class="card">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        </div>
+        <h3>Commercial</h3>
+        <p>Office buildings, retail spaces and hospitality projects delivered on time and on budget.</p>
+      </div>
+      <div class="card">
+        <div class="icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20M5 20V8l7-5 7 5v12"/></svg>
+        </div>
+        <h3>Industrial</h3>
+        <p>Warehouses, factories and infrastructure built to industrial-grade specifications.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="section" style="background:#F8FAFC">
+  <div class="container">
+    <div class="section-head">
+      <h2>Featured Projects</h2>
+      <p>A selection of recent work showcasing our craft and capability.</p>
+    </div>
+    <div class="projects">
+      <div class="project">
+        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80" alt="Skyline Towers">
+        <div class="overlay"><div><h3>Skyline Towers</h3><p>Commercial · 2024</p></div></div>
+      </div>
+      <div class="project">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Green Villa">
+        <div class="overlay"><div><h3>Green Villa Estate</h3><p>Residential · 2023</p></div></div>
+      </div>
+      <div class="project">
+        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&q=80" alt="Industrial Park">
+        <div class="overlay"><div><h3>Metro Industrial Park</h3><p>Industrial · 2024</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="section">
+  <div class="container about">
+    <div class="about-img">
+      <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80" alt="Team at work">
+    </div>
+    <div>
+      <h2>Why Choose Karthikeya</h2>
+      <p>We combine engineering excellence with transparent communication. Every project is managed by a dedicated team accountable from groundbreaking to handover.</p>
+      <ul class="features">
+        <li>Transparent pricing with no hidden costs</li>
+        <li>On-time delivery guaranteed</li>
+        <li>Quality materials from certified suppliers</li>
+        <li>Dedicated project manager for every site</li>
+        <li>Post-handover support and warranty</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="section">
+  <div class="container">
+    <div class="contact">
+      <h2>Ready to Build Something Great?</h2>
+      <p>Tell us about your project and we'll get back to you within one business day.</p>
+      <a href="mailto:info@karthikeyaconstructions.com" class="btn btn-light">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="logo" style="color:var(--color-6);margin-bottom:16px">Karthikeya<span style="color:var(--color-4)">.</span> Constructions</div>
+        <p style="font-size:14px;opacity:.7;max-width:320px">Building quality structures that stand the test of time.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#services">Services</a>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <a href="#">Residential</a>
+        <a href="#">Commercial</a>
+        <a href="#">Industrial</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:info@karthikeyaconstructions.com">info@karthikeyaconstructions.com</a>
+        <a href="tel:+919999999999">+91 99999 99999</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Karthikeya Constructions. All rights reserved.</span>
+      <span>Built with care.</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
