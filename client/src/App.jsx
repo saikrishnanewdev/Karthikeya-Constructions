@@ -218,8 +218,9 @@ export default function App() {
       <section className="section about">
         <div className="section-head"><h2>About</h2></div>
         <div className="card">
-          <p><strong>Raj Kumar</strong></p>
-          <p>Residential, commercial and industrial construction in Hyderabad — with quality, safety, and on-time delivery.</p>
+          <p className="about-name">Raj Kumar</p>
+          <p className="about-role">Founder &amp; Civil Engineer, Karthikeya Constructions</p>
+          <p>Raj Kumar leads Karthikeya Constructions — residential, commercial and industrial construction in Hyderabad, delivered with quality, safety, and on-time completion. He is the main contact person for all project enquiries.</p>
           <p>Mobile: <a href={PHONE_LINK}>{PHONE_DISPLAY}</a></p>
           <p>Address: Hyderabad</p>
         </div>

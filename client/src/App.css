@@ -45,6 +45,8 @@ body{font-family:'Outfit',ui-sans-serif,sans-serif;color:var(--color-1);backgrou
 .card p + p{margin-top:8px}
 .card a{color:var(--color-2)}
 .service-icon{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:var(--r-sm);background:#EAF6FC;color:var(--color-2);margin-bottom:16px}
+.about-name{font-size:24px!important;font-weight:700!important;color:var(--color-1)!important;line-height:30px!important}
+.about-role{font-size:16px!important;font-weight:600!important;color:var(--color-4)!important}
 .project{border-radius:var(--r-lg);overflow:hidden;position:relative}
 .project img{width:100%;height:260px;object-fit:cover;transition:transform .3s}
 .project:hover img{transform:scale(1.05)}
