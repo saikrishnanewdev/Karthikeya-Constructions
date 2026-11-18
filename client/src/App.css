@@ -111,6 +111,7 @@ footer a{color:var(--color-2)}
 .btn-danger{border:1px solid #FECACA;color:#DC2626;background:var(--color-6)}
 .btn-danger:hover{background:#FEF2F2;border-color:#DC2626}
 .enquiry-card:hover{transform:none;box-shadow:none}
+.scroll-hint{display:none}
 @media(max-width:768px){
   .nav{height:64px;padding:0 16px}
   .logo{font-size:20px;gap:8px}
@@ -137,6 +138,10 @@ footer a{color:var(--color-2)}
   .form{max-width:none}
   .project img{height:220px}
   .project .overlay{padding:20px}
+  .scroll-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:16px;padding-bottom:8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .scroll-row::-webkit-scrollbar{display:none}
+  .scroll-row>*{flex:0 0 85%;scroll-snap-align:start}
+  .scroll-hint{display:block;text-align:center;font-size:14px;color:var(--color-3);margin-top:16px}
   .admin-nav{height:64px}
   .admin-nav .logo-text{display:none}
   .admin-nav-actions .btn{padding:8px 12px}

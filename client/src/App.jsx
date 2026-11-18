@@ -299,7 +299,7 @@ export default function App() {
           <h2>Our Services</h2>
           <p>Comprehensive construction solutions tailored to your vision.</p>
         </div>
-        <div className="grid-3">
+        <div className="grid-3 scroll-row">
           {services.map(s => (
             <div className="card service-card" key={s.id}>
               <span className="service-icon"><ServiceIcon title={s.title} /></span>
@@ -308,6 +308,7 @@ export default function App() {
             </div>
           ))}
         </div>
+        <p className="scroll-hint">Swipe to see more →</p>
       </section>
 
       <section id="projects" className="section alt">
@@ -320,7 +321,7 @@ export default function App() {
             <button key={f} className={`filter ${filter===f?'active':''}`} onClick={()=>setFilter(f)}>{f}</button>
           ))}
         </div>
-        <div className="grid-3">
+        <div className="grid-3 scroll-row">
           {projects.filter(p=>filter==='all'||p.status===filter).map(p => (
             <div className="project" key={p.id}>
               <img src={p.image} alt={p.title} />
@@ -333,6 +334,7 @@ export default function App() {
             </div>
           ))}
         </div>
+        <p className="scroll-hint">Swipe to see more →</p>
       </section>
 
       <section id="contact" className="section">
