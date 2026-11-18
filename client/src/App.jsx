@@ -2,9 +2,25 @@ import { useEffect, useState } from 'react';
 import { supabase } from './supabase';
 import './App.css';
 
+const PHONE_DISPLAY = '+91 9848081090';
+const PHONE_LINK = 'tel:+919848081090';
+
+// Simple inline icons (no emoji): picked by service title.
+function ServiceIcon({ title }) {
+  const common = { width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true };
+  if (/interior/i.test(title)) {
+    return (<svg {...common}><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6M9 11h.01M15 11h.01" /></svg>);
+  }
+  if (/renovat/i.test(title)) {
+    return (<svg {...common}><path d="M3 21h18M6 21V10l6-6 6 6v11M9 21v-4h6v4M14 7l3 3" /></svg>);
+  }
+  return (<svg {...common}><rect x="4" y="4" width="16" height="16" rx="2" /><path d="M8 9h8M8 13h8M8 17h5" /></svg>);
+}
+
 export default function App() {
   const [projects, setProjects] = useState([]);
   const [services, setServices] = useState([]);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [adminToken, setAdminToken] = useState('');
   const [adminPass, setAdminPass] = useState('');
   const [filter, setFilter] = useState('all');
@@ -90,10 +106,23 @@ export default function App() {
     <div className="app">
       <header className="nav">
         <div className="logo">Karthikeya Constructions</div>
-        <nav className="nav-links">
-          <a href="#services">Services</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
+        <button
+          type="button"
+          className="menu-btn"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          onClick={() => setMenuOpen(v => !v)}
+        >
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+        </button>
+        <nav className={`nav-links ${menuOpen ? 'open' : ''}`} id="mobile-menu">
+          <a href="#services" onClick={() => setMenuOpen(false)}>Services</a>
+          <a href="#projects" onClick={() => setMenuOpen(false)}>Projects</a>
+          <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
+          <a className="nav-call" href={PHONE_LINK} onClick={() => setMenuOpen(false)}>Call {PHONE_DISPLAY}</a>
         </nav>
       </header>
 
@@ -107,7 +136,7 @@ export default function App() {
           </div>
         </div>
         <div className="hero-img">
-          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=900&q=80" alt="Construction site" />
+          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=900&q=80" alt="Construction site with building plans" width="900" height="600" loading="eager" fetchPriority="high" decoding="async" />
         </div>
       </section>
 
@@ -118,7 +147,8 @@ export default function App() {
         </div>
         <div className="grid-3">
           {services.map(s => (
-            <div className="card" key={s.id}>
+            <div className="card service-card" key={s.id}>
+              <span className="service-icon"><ServiceIcon title={s.title} /></span>
               <h3>{s.title}</h3>
               <p>{s.description}</p>
             </div>
@@ -141,8 +171,10 @@ export default function App() {
             <div className="project" key={p.id}>
               <img src={p.image} alt={p.title} />
               <div className="overlay">
-                <h3>{p.title}</h3>
-                <p>{p.category} · {p.year} · {p.status}</p>
+                <div>
+                  <h3>{p.title}</h3>
+                  <p>{p.category} {' · '} {p.year} {' · '} {p.status}</p>
+                </div>
               </div>
             </div>
           ))}
@@ -153,11 +185,24 @@ export default function App() {
         <div className="contact">
           <h2>Ready to Build Something Great?</h2>
           <p>Tell us about your project.</p>
+          <a className="btn btn-call" href={PHONE_LINK}>Call {PHONE_DISPLAY}</a>
           <form onSubmit={submit} className="form">
-            <input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required />
-            <input placeholder="Email" type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} required />
-            <input placeholder="Phone" value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} />
-            <textarea placeholder="Message" value={form.message} onChange={e=>setForm({...form,message:e.target.value})} required />
+            <div className="field">
+              <label htmlFor="contact-name">Name *</label>
+              <input id="contact-name" name="name" placeholder="Your name" autoComplete="name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required />
+            </div>
+            <div className="field">
+              <label htmlFor="contact-email">Email *</label>
+              <input id="contact-email" name="email" placeholder="you@example.com" type="email" autoComplete="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} required />
+            </div>
+            <div className="field">
+              <label htmlFor="contact-phone">Phone</label>
+              <input id="contact-phone" name="phone" placeholder="Your phone number" type="tel" inputMode="tel" autoComplete="tel" value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} />
+            </div>
+            <div className="field">
+              <label htmlFor="contact-message">Message *</label>
+              <textarea id="contact-message" name="message" placeholder="Tell us about your project" value={form.message} onChange={e=>setForm({...form,message:e.target.value})} required />
+            </div>
             <button className="btn btn-primary" type="submit" disabled={status==='sending'}>Send Message</button>
             {status==='sent' && <p className="ok">Thanks! We'll be in touch.</p>}
             {status==='error' && <p className="err">Something went wrong.</p>}
@@ -165,16 +210,23 @@ export default function App() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section about">
         <div className="section-head"><h2>About</h2></div>
         <div className="card">
           <p><strong>Raj Kumar</strong></p>
-          <p>Mobile: +91 9848081090</p>
+          <p>Residential, commercial and industrial construction in Hyderabad — with quality, safety, and on-time delivery.</p>
+          <p>Mobile: <a href={PHONE_LINK}>{PHONE_DISPLAY}</a></p>
           <p>Address: Hyderabad</p>
         </div>
       </section>
 
       <footer>
+        <nav className="footer-links" aria-label="Footer">
+          <a href="#services">Services</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <p>Call: <a href={PHONE_LINK}>{PHONE_DISPLAY}</a> · Hyderabad</p>
         <p>© 2026 Karthikeya Constructions. All rights reserved.</p>
       </footer>
     </div>
