@@ -23,6 +23,7 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [adminToken, setAdminToken] = useState('');
   const [adminPass, setAdminPass] = useState('');
+  const [adminError, setAdminError] = useState('');
   const [filter, setFilter] = useState('all');
   const [form, setForm] = useState({ name:'', email:'', phone:'', message:'' });
   const [status, setStatus] = useState('');
@@ -90,8 +91,9 @@ export default function App() {
           {!adminToken ? (
             <div className="contact">
               <h2>Admin Login</h2>
-              <form onSubmit={e=>{e.preventDefault(); if(adminPass==='admin123') setAdminToken(adminPass);}} className="form">
+              <form onSubmit={async e=>{e.preventDefault(); setAdminError(''); const { data, error } = await supabase.rpc('check_admin_password', { p: adminPass }); if (data) setAdminToken('ok'); else setAdminError(error ? 'Login is not set up yet. Please try again later.' : 'Wrong password. Try again.');}} className="form">
                 <input type="password" placeholder="Password" value={adminPass} onChange={e=>setAdminPass(e.target.value)} />
+                {adminError && <p className="err">{adminError}</p>}
                 <button className="btn btn-primary" type="submit">Login</button>
               </form>
             </div>
