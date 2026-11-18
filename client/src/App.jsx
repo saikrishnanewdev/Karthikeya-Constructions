@@ -66,6 +66,21 @@ export default function App() {
   const editProject = (p) => { setEditingId(p.id); setAdminForm({ title:p.title, category:p.category, year:p.year, status:p.status, image:p.image }); };
   const delProject = async (id) => { await supabase.from('projects').delete().eq('id', id); setProjects(prev=>prev.filter(p=>p.id!==id)); };
   const delInquiry = async (id) => { await supabase.from('inquiries').delete().eq('id', id); setInquiries(prev=>prev.filter(q=>q.id!==id)); };
+  const [uploading, setUploading] = useState(false);
+  const [uploadMsg, setUploadMsg] = useState('');
+  const uploadImage = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true); setUploadMsg('Uploading...');
+    const ext = file.name.split('.').pop();
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+    const { error } = await supabase.storage.from('project-images').upload(path, file);
+    if (error) { setUploadMsg('Upload failed: ' + error.message); setUploading(false); return; }
+    const { data } = supabase.storage.from('project-images').getPublicUrl(path);
+    setAdminForm(f => ({ ...f, image: data.publicUrl }));
+    setUploadMsg('Uploaded. Click Add/Update Project to save it.');
+    setUploading(false);
+  };
 
   if (window.location.pathname === '/admin') {
     return (
@@ -92,7 +107,11 @@ export default function App() {
                   <option value="completed">Completed</option>
                 </select>
                 <input placeholder="Image URL" value={adminForm.image} onChange={e=>setAdminForm({...adminForm,image:e.target.value})} />
-                <button className="btn btn-primary" type="submit">{editingId?'Update Project':'Add Project'}</button>
+                <p style={{margin:0}}>or upload a photo:</p>
+                <input type="file" accept="image/*" onChange={uploadImage} disabled={uploading} />
+                {uploadMsg && <p style={{margin:0}}>{uploadMsg}</p>}
+                {adminForm.image && <img src={adminForm.image} alt="Project preview" style={{maxWidth:220, borderRadius:8}} />}
+                <button className="btn btn-primary" type="submit" disabled={uploading}>{editingId?'Update Project':'Add Project'}</button>
               </form>
               <div className="grid-3" style={{marginTop:24}}>
                 {projects.map(p=>(
