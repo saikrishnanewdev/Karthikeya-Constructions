@@ -28,6 +28,14 @@ export default function App() {
   const [status, setStatus] = useState('');
   const [adminForm, setAdminForm] = useState({ title:'', category:'Commercial', year:new Date().getFullYear(), status:'ongoing', image:'' });
   const [editingId, setEditingId] = useState(null);
+  const [inquiries, setInquiries] = useState([]);
+
+  const loadInquiries = async () => {
+    let { data, error } = await supabase.from('inquiries').select('*').order('created_at', { ascending: false });
+    if (error) { const r = await supabase.from('inquiries').select('*'); data = r.data; }
+    setInquiries(data || []);
+  };
+  useEffect(() => { if (adminToken) loadInquiries(); }, [adminToken]);
 
   const load = async () => {
     const { data: p } = await supabase.from('projects').select('*');
@@ -57,6 +65,7 @@ export default function App() {
   };
   const editProject = (p) => { setEditingId(p.id); setAdminForm({ title:p.title, category:p.category, year:p.year, status:p.status, image:p.image }); };
   const delProject = async (id) => { await supabase.from('projects').delete().eq('id', id); setProjects(prev=>prev.filter(p=>p.id!==id)); };
+  const delInquiry = async (id) => { await supabase.from('inquiries').delete().eq('id', id); setInquiries(prev=>prev.filter(q=>q.id!==id)); };
 
   if (window.location.pathname === '/admin') {
     return (
@@ -95,6 +104,23 @@ export default function App() {
                   </div>
                 ))}
               </div>
+              <div className="section-head" style={{marginTop:48}}><h2>Customer Enquiries ({inquiries.length})</h2></div>
+              {inquiries.length === 0 ? (
+                <p>No enquiries yet. When a customer fills the contact form, their details will appear here.</p>
+              ) : (
+                <div className="grid-3">
+                  {inquiries.map(q=>(
+                    <div className="card" key={q.id}>
+                      <h3>{q.name}</h3>
+                      {q.created_at && <p>{new Date(q.created_at).toLocaleString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'numeric', minute:'2-digit' })}</p>}
+                      {q.phone && <p>Phone: <a href={`tel:${q.phone.replace(/[^+\d]/g,'')}`}>{q.phone}</a></p>}
+                      {q.email && <p>Email: <a href={`mailto:${q.email}`}>{q.email}</a></p>}
+                      <p>{q.message}</p>
+                      <button className="btn btn-outline" onClick={()=>delInquiry(q.id)} style={{marginTop:12}}>Delete</button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </>
           )}
         </section>
