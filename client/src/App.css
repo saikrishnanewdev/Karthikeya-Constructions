@@ -7,8 +7,9 @@ body{font-family:'Outfit',ui-sans-serif,sans-serif;color:var(--color-1);backgrou
 .app{min-height:100vh}
 .container{max-width:1200px;margin:0 auto;padding:0 24px}
 .nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;height:80px;padding:0 24px;background:var(--color-6);border-bottom:1px solid var(--color-5)}
-.logo{font-size:20px;font-weight:600;color:var(--color-2)}
-.logo span{color:var(--color-4)}
+.logo{display:flex;align-items:center;gap:10px;font-size:26px;font-weight:700;letter-spacing:-.5px;line-height:1;color:var(--color-2);white-space:nowrap}
+.logo-mark{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--r-sm);background:var(--color-2);color:var(--color-6);flex-shrink:0}
+.logo-text span{color:var(--color-4)}
 .nav-links{display:flex;gap:32px;align-items:center}
 .nav-links a{font-size:14px;font-weight:500;color:var(--color-3);min-height:44px;display:inline-flex;align-items:center}
 .nav-links a:hover{color:var(--color-2)}
@@ -72,7 +73,8 @@ footer a{color:var(--color-2)}
 .footer-links a{font-size:16px;font-weight:500;color:var(--color-3);min-height:44px;display:inline-flex;align-items:center}
 @media(max-width:768px){
   .nav{height:64px;padding:0 16px}
-  .logo{font-size:17px}
+  .logo{font-size:20px;gap:8px}
+  .logo-mark{width:34px;height:34px}
   .menu-btn{display:flex}
   .nav-links{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--color-6);border-bottom:1px solid var(--color-5);padding:8px 16px 16px}
   .nav-links.open{display:flex}
