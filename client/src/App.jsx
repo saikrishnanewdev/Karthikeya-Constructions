@@ -96,74 +96,157 @@ export default function App() {
 
   if (window.location.pathname === '/admin') {
     return (
-      <div className="app">
-        <header className="nav"><div className="logo">Admin</div></header>
-        <section className="section">
-          {!adminToken ? (
-            <div className="contact">
-              <h2>Admin Login</h2>
-              <form onSubmit={async e=>{e.preventDefault(); setAdminError(''); const { data, error } = await supabase.rpc('check_admin_password', { p: adminPass }); if (data) setAdminToken('ok'); else setAdminError(error ? 'Login is not set up yet. Please try again later.' : 'Wrong password. Try again.');}} className="form">
-                <input type="password" placeholder="Password" value={adminPass} onChange={e=>setAdminPass(e.target.value)} />
+      <div className="app admin">
+        <header className="nav admin-nav">
+          <div className="logo">
+            <span className="logo-mark" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 10h.01M15 10h.01M12 7v.01" /></svg>
+            </span>
+            <span className="logo-text">Karthikeya <span>Constructions</span></span>
+          </div>
+          {adminToken && (
+            <div className="admin-nav-actions">
+              <a href="/" className="btn btn-outline">View Site</a>
+              <button className="btn btn-outline" type="button" onClick={()=>{setAdminToken(''); setAdminPass('');}}>Logout</button>
+            </div>
+          )}
+        </header>
+        {!adminToken ? (
+          <main className="admin-main">
+            <div className="admin-panel admin-login">
+              <h1>Admin Login</h1>
+              <p className="sub">Sign in to manage projects, enquiries and settings.</p>
+              <form onSubmit={async e=>{e.preventDefault(); setAdminError(''); const { data, error } = await supabase.rpc('check_admin_password', { p: adminPass }); if (data) setAdminToken('ok'); else setAdminError(error ? 'Login is not set up yet. Please try again later.' : 'Wrong password. Try again.');}} className="form admin-form">
+                <div className="field">
+                  <label htmlFor="admin-password">Password</label>
+                  <input id="admin-password" type="password" placeholder="Enter admin password" value={adminPass} onChange={e=>setAdminPass(e.target.value)} />
+                </div>
                 {adminError && <p className="err">{adminError}</p>}
                 <button className="btn btn-primary" type="submit">Login</button>
               </form>
             </div>
-          ) : (
-            <>
-              <div className="section-head"><h2>Manage Projects</h2></div>
-              <form onSubmit={addProject} className="form">
-                <input placeholder="Title" value={adminForm.title} onChange={e=>setAdminForm({...adminForm,title:e.target.value})} required />
-                <input placeholder="Category" value={adminForm.category} onChange={e=>setAdminForm({...adminForm,category:e.target.value})} />
-                <input placeholder="Year" type="number" value={adminForm.year} onChange={e=>setAdminForm({...adminForm,year:+e.target.value})} />
-                <select value={adminForm.status} onChange={e=>setAdminForm({...adminForm,status:e.target.value})}>
-                  <option value="ongoing">Ongoing</option>
-                  <option value="completed">Completed</option>
-                </select>
-                <input placeholder="Image URL" value={adminForm.image} onChange={e=>setAdminForm({...adminForm,image:e.target.value})} />
-                <p style={{margin:0}}>or upload a photo:</p>
-                <input type="file" accept="image/*" onChange={uploadImage} disabled={uploading} />
-                {uploadMsg && <p style={{margin:0}}>{uploadMsg}</p>}
-                {adminForm.image && <img src={adminForm.image} alt="Project preview" style={{maxWidth:220, borderRadius:8}} />}
-                <button className="btn btn-primary" type="submit" disabled={uploading}>{editingId?'Update Project':'Add Project'}</button>
+          </main>
+        ) : (
+          <main className="admin-main">
+            <div className="admin-title">
+              <h1>Admin Dashboard</h1>
+              <p>Manage projects, customer enquiries and settings for Karthikeya Constructions.</p>
+            </div>
+            <div className="admin-stats">
+              <div className="stat"><b>{projects.length}</b><span>Total Projects</span></div>
+              <div className="stat"><b>{projects.filter(p=>p.status==='ongoing').length}</b><span>Ongoing</span></div>
+              <div className="stat"><b>{projects.filter(p=>p.status==='completed').length}</b><span>Completed</span></div>
+              <div className="stat"><b>{inquiries.length}</b><span>Enquiries</span></div>
+            </div>
+            <section className="admin-panel">
+              <h2>{editingId ? 'Edit Project' : 'Add Project'}</h2>
+              <p className="sub">{editingId ? 'Update the project details below.' : 'Add a new project to the website.'}</p>
+              <form onSubmit={addProject} className="form admin-form admin-form-grid">
+                <div className="field">
+                  <label htmlFor="project-title">Title *</label>
+                  <input id="project-title" placeholder="e.g. Skyline Towers" value={adminForm.title} onChange={e=>setAdminForm({...adminForm,title:e.target.value})} required />
+                </div>
+                <div className="field">
+                  <label htmlFor="project-category">Category</label>
+                  <select id="project-category" value={adminForm.category} onChange={e=>setAdminForm({...adminForm,category:e.target.value})}>
+                    <option value="Commercial">Commercial</option>
+                    <option value="Residential">Residential</option>
+                    <option value="Industrial">Industrial</option>
+                  </select>
+                </div>
+                <div className="field">
+                  <label htmlFor="project-year">Year</label>
+                  <input id="project-year" type="number" value={adminForm.year} onChange={e=>setAdminForm({...adminForm,year:+e.target.value})} />
+                </div>
+                <div className="field">
+                  <label htmlFor="project-status">Status</label>
+                  <select id="project-status" value={adminForm.status} onChange={e=>setAdminForm({...adminForm,status:e.target.value})}>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                </div>
+                <div className="field field-full">
+                  <label htmlFor="project-image">Image URL</label>
+                  <input id="project-image" placeholder="https://..." value={adminForm.image} onChange={e=>setAdminForm({...adminForm,image:e.target.value})} />
+                </div>
+                <div className="field field-full">
+                  <label htmlFor="project-upload">Or upload a photo</label>
+                  <input id="project-upload" type="file" accept="image/*" onChange={uploadImage} disabled={uploading} />
+                  {uploadMsg && <p style={{margin:0}}>{uploadMsg}</p>}
+                  {adminForm.image && <img src={adminForm.image} alt="Project preview" style={{maxWidth:220, borderRadius:8}} />}
+                </div>
+                <div className="admin-form-actions field-full">
+                  <button className="btn btn-primary" type="submit" disabled={uploading}>{editingId?'Update Project':'Add Project'}</button>
+                  {editingId && <button className="btn btn-outline" type="button" onClick={()=>{setEditingId(null); setAdminForm({ title:'', category:'Commercial', year:new Date().getFullYear(), status:'ongoing', image:'' });}}>Cancel</button>}
+                </div>
               </form>
-              <div className="grid-3" style={{marginTop:24}}>
-                {projects.map(p=>(
-                  <div className="card" key={p.id}>
-                    <h3>{p.title}</h3>
-                    <p>{p.category} · {p.year} · {p.status}</p>
-                    <button className="btn btn-outline" onClick={()=>editProject(p)} style={{marginTop:12,marginRight:8}}>Edit</button>
-                    <button className="btn btn-outline" onClick={()=>delProject(p.id)} style={{marginTop:12}}>Delete</button>
-                  </div>
-                ))}
-              </div>
-              <div className="section-head" style={{marginTop:48}}><h2>Customer Enquiries ({inquiries.length})</h2></div>
+            </section>
+            <section className="admin-panel">
+              <h2>Projects ({projects.length})</h2>
+              <p className="sub">All projects shown on the website.</p>
+              {projects.length === 0 ? (
+                <p>No projects yet. Add your first project above.</p>
+              ) : (
+                <div className="project-list">
+                  {projects.map(p=>(
+                    <div className="project-row" key={p.id}>
+                      {p.image && <img src={p.image} alt="" className="project-thumb" />}
+                      <div className="project-row-info">
+                        <h3>{p.title}</h3>
+                        <p>{p.category} · {p.year}</p>
+                      </div>
+                      <span className={`pill ${p.status==='completed' ? 'pill-completed' : 'pill-ongoing'}`}>{p.status}</span>
+                      <div className="project-row-actions">
+                        <button className="btn btn-outline" onClick={()=>editProject(p)}>Edit</button>
+                        <button className="btn btn-danger" onClick={()=>delProject(p.id)}>Delete</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+            <section className="admin-panel">
+              <h2>Customer Enquiries ({inquiries.length})</h2>
+              <p className="sub">Messages sent through the contact form on the website, newest first.</p>
               {inquiries.length === 0 ? (
                 <p>No enquiries yet. When a customer fills the contact form, their details will appear here.</p>
               ) : (
-                <div className="grid-3">
+                <div className="grid-2">
                   {inquiries.map(q=>(
-                    <div className="card" key={q.id}>
+                    <div className="card enquiry-card" key={q.id}>
                       <h3>{q.name}</h3>
                       {q.created_at && <p>{new Date(q.created_at).toLocaleString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'numeric', minute:'2-digit' })}</p>}
                       {q.phone && <p>Phone: <a href={`tel:${q.phone.replace(/[^+\d]/g,'')}`}>{q.phone}</a></p>}
                       {q.email && <p>Email: <a href={`mailto:${q.email}`}>{q.email}</a></p>}
                       <p>{q.message}</p>
-                      <button className="btn btn-outline" onClick={()=>delInquiry(q.id)} style={{marginTop:12}}>Delete</button>
+                      <button className="btn btn-danger" onClick={()=>delInquiry(q.id)} style={{marginTop:12}}>Delete</button>
                     </div>
                   ))}
                 </div>
               )}
-              <div className="section-head" style={{marginTop:48}}><h2>Change Password</h2></div>
-              <form onSubmit={changePassword} className="form">
-                <input type="password" placeholder="Current password" value={pwForm.current} onChange={e=>setPwForm({...pwForm,current:e.target.value})} required />
-                <input type="password" placeholder="New password" value={pwForm.next} onChange={e=>setPwForm({...pwForm,next:e.target.value})} required />
-                <input type="password" placeholder="Confirm new password" value={pwForm.confirm} onChange={e=>setPwForm({...pwForm,confirm:e.target.value})} required />
+            </section>
+            <section className="admin-panel">
+              <h2>Change Password</h2>
+              <p className="sub">Update the admin login password. You will need the new password next time you log in.</p>
+              <form onSubmit={changePassword} className="form admin-form">
+                <div className="field">
+                  <label htmlFor="pw-current">Current password</label>
+                  <input id="pw-current" type="password" placeholder="Current password" value={pwForm.current} onChange={e=>setPwForm({...pwForm,current:e.target.value})} required />
+                </div>
+                <div className="field">
+                  <label htmlFor="pw-new">New password</label>
+                  <input id="pw-new" type="password" placeholder="New password (min 6 characters)" value={pwForm.next} onChange={e=>setPwForm({...pwForm,next:e.target.value})} required />
+                </div>
+                <div className="field">
+                  <label htmlFor="pw-confirm">Confirm new password</label>
+                  <input id="pw-confirm" type="password" placeholder="Confirm new password" value={pwForm.confirm} onChange={e=>setPwForm({...pwForm,confirm:e.target.value})} required />
+                </div>
                 {pwMsg && <p style={{margin:0}}>{pwMsg}</p>}
                 <button className="btn btn-primary" type="submit">Change Password</button>
               </form>
-            </>
-          )}
-        </section>
+            </section>
+          </main>
+        )}
       </div>
     );
   }
