@@ -216,7 +216,7 @@ export default function App() {
       </section>
 
       <section className="section about">
-        <div className="section-head"><h2>About</h2></div>
+        <div className="section-head"><h2>Meet the Founder</h2></div>
         <div className="card">
           <p className="about-name">Raj Kumar</p>
           <p className="about-role">Founder &amp; Civil Engineer, Karthikeya Constructions</p>
