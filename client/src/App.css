@@ -61,7 +61,8 @@ body{font-family:'Outfit',ui-sans-serif,sans-serif;color:var(--color-1);backgrou
 .form{display:grid;gap:16px;max-width:500px;margin:0 auto;text-align:left}
 .field{display:grid;gap:6px}
 .field label{font-size:14px;font-weight:500;color:var(--color-6)}
-.form input,.form textarea{width:100%;padding:14px 16px;border-radius:var(--r-sm);border:1px solid var(--color-5);font-family:inherit;font-size:16px;line-height:24px}
+.form input,.form select,.form textarea{width:100%;padding:14px 16px;border-radius:var(--r-sm);border:1px solid var(--color-5);font-family:inherit;font-size:16px;line-height:24px;background-color:var(--color-6);color:var(--color-1)}
+.form select{appearance:none;-webkit-appearance:none;padding-right:44px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231A4D7A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;background-size:16px;cursor:pointer}
 .form textarea{min-height:120px;resize:vertical}
 .ok{color:#16a34a;margin-top:8px}
 .err{color:#dc2626;margin-top:8px}
