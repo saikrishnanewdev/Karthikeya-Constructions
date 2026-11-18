@@ -141,7 +141,7 @@ export default function App() {
           </div>
         </div>
         <div className="hero-img">
-          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=900&q=80" alt="Construction site with building plans" width="900" height="600" loading="eager" fetchPriority="high" decoding="async" />
+          <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&q=80" alt="Construction site with workers building a new structure" width="900" height="600" loading="eager" fetchPriority="high" decoding="async" />
         </div>
       </section>
 
