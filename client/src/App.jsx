@@ -69,6 +69,17 @@ export default function App() {
   const delInquiry = async (id) => { await supabase.from('inquiries').delete().eq('id', id); setInquiries(prev=>prev.filter(q=>q.id!==id)); };
   const [uploading, setUploading] = useState(false);
   const [uploadMsg, setUploadMsg] = useState('');
+  const [pwForm, setPwForm] = useState({ current:'', next:'', confirm:'' });
+  const [pwMsg, setPwMsg] = useState('');
+  const changePassword = async (e) => {
+    e.preventDefault();
+    if (pwForm.next !== pwForm.confirm) { setPwMsg('New passwords do not match.'); return; }
+    if (pwForm.next.length < 6) { setPwMsg('New password must be at least 6 characters.'); return; }
+    const { data, error } = await supabase.rpc('change_admin_password', { old_p: pwForm.current, new_p: pwForm.next });
+    if (error) { setPwMsg('Password change is not set up yet. Please try again later.'); return; }
+    if (data) { setPwMsg('Password changed. Use the new password next time you log in.'); setPwForm({ current:'', next:'', confirm:'' }); }
+    else setPwMsg('Current password is wrong.');
+  };
   const uploadImage = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -142,6 +153,14 @@ export default function App() {
                   ))}
                 </div>
               )}
+              <div className="section-head" style={{marginTop:48}}><h2>Change Password</h2></div>
+              <form onSubmit={changePassword} className="form">
+                <input type="password" placeholder="Current password" value={pwForm.current} onChange={e=>setPwForm({...pwForm,current:e.target.value})} required />
+                <input type="password" placeholder="New password" value={pwForm.next} onChange={e=>setPwForm({...pwForm,next:e.target.value})} required />
+                <input type="password" placeholder="Confirm new password" value={pwForm.confirm} onChange={e=>setPwForm({...pwForm,confirm:e.target.value})} required />
+                {pwMsg && <p style={{margin:0}}>{pwMsg}</p>}
+                <button className="btn btn-primary" type="submit">Change Password</button>
+              </form>
             </>
           )}
         </section>
